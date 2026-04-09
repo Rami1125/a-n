@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روضة مملكة الفراشات - لعبة الأبطال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+            --bg-color: #f7f9fc;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 5px solid var(--secondary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .teacher-note {
+            background: #eefcfb;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 20px;
+            border-right: 5px solid var(--secondary-color);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 300px;
+            background: #eee;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .blurred {
+            filter: blur(15px);
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(78,205,196,0.4);
+        }
+
+        .success-msg {
+            display: none;
+            color: #27ae60;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: pop 0.5s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>روضة مملكة الفراشات 🦋</h1>
+        <div class="teacher-note" id="hint">
+            المعلمة رنا تقول: "من هذا البطل الجميل؟"
+        </div>
+
+        <div class="image-container">
+            <img src="" id="child-img" class="blurred" alt="طفل من الروضة">
+        </div>
+
+        <div id="game-controls">
+            <button class="btn" onclick="revealImage()">من أنا؟ (كشف الصورة)</button>
+            <button class="btn btn-secondary" onclick="nextChild()">التالي ➔</button>
+        </div>
+
+        <div class="success-msg" id="success">أحسنت! يا بطل! ✨</div>
+    </div>
+
+    <script>
+        // כאן אתה מעדכן את הנתונים מהצ'אט והתמונות שלך
+        const children = [
+            {
+                name: "أحمد",
+                hint: "هذا البطل يحب السيارات كثيراً ويرتدي قميصاً أزرق!",
+                image: "images/ahmad.jpg" // וודא שהנתיב נכון
+            },
+            {
+                name: "سارة",
+                hint: "أميرة تحب الرسم وترتدي فستاناً جميلاً عليه زهور!",
+                image: "images/sara.jpg"
+            },
+            {
+                name: "خالد",
+                hint: "بطلنا الذي يضحك دائماً ويرتדי قبعة خضراء!",
+                image: "images/khaled.jpg"
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function updateCard() {
+            const child = children[currentIndex];
+            const imgElement = document.getElementById('child-img');
+            const hintElement = document.getElementById('hint');
+            const successElement = document.getElementById('success');
+
+            imgElement.src = child.image;
+            imgElement.classList.add('blurred');
+            hintElement.innerText = "المعلمة رنا تقول: " + child.hint;
+            successElement.style.display = 'none';
+        }
+
+        function revealImage() {
+            document.getElementById('child-img').classList.remove('blurred');
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('success').innerText = "إنه " + children[currentIndex].name + "! 🎉";
+        }
+
+        function nextChild() {
+            currentIndex = (currentIndex + 1) % children.length;
+            updateCard();
+        }
+
+        // טעינה ראשונית
+        window.onload = updateCard;
+    </script>
+</body>
+</html>
